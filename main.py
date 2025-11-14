@@ -2,7 +2,7 @@ import os
 from datetime import datetime, date
 from typing import List, Optional
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, EmailStr
 
@@ -57,6 +57,11 @@ class BookingRequest(BaseModel):
 @app.get("/")
 def read_root():
     return {"message": "Bus Booking API is running"}
+
+# Explicit HEAD handler to avoid 405 from health checks
+@app.head("/")
+def head_root():
+    return Response(status_code=200)
 
 @app.get("/api/hello")
 def hello():
